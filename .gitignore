@@ -21,3 +21,18 @@ node_modules/
 # Índice vectorial local regenerable desde data/corpus.json
 data/indice_embeddings.npz
 data/indice_embeddings.npz.tmp
+capturas/01-consejos.png
+capturas/02-tramites.png
+capturas/03-emplazamiento.png
+capturas/04-no-consta.png
+capturas/05-documentos.png
+capturas/06-plazo.png
+capturas/07-tiempo.png
+capturas/08-monitores.png
+capturas/09-evaluacion.png
+capturas/10-recuento.png
+capturas/verificacion.json
+capturas/logs/servidor.stderr.log
+capturas/logs/servidor.stdout.log
+capturas/logs/vite.stderr.log
+capturas/logs/vite.stdout.log
