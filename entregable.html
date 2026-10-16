@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Asistente para dudas sobre campamentos juveniles · Castilla y León</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #193b32;
+        --body: #354b43;
+        --muted: #72847b;
+        --green: #26715b;
+        --line: #dce6df;
+        --soft: #f3f7f3;
+        --amber: #9b6822;
+        --amber-soft: #fff6e6;
+      }
+      * { box-sizing: border-box; }
+      html { background: #e9eee9; }
+      body {
+        margin: 0;
+        color: var(--body);
+        font: 10pt/1.48 "Segoe UI", Arial, sans-serif;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      a { color: #1d6955; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+      .sheet {
+        position: relative;
+        width: 210mm;
+        min-height: 297mm;
+        margin: 12mm auto;
+        padding: 15mm 14mm 17mm;
+        background: #fff;
+        box-shadow: 0 4px 22px #183c2e18;
+        break-after: page;
+        page-break-after: always;
+      }
+      .sheet:last-child { break-after: auto; page-break-after: auto; }
+      .eyebrow { margin: 0 0 4mm; color: var(--green); font-size: 8pt; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+      h1, h2, h3, p { margin-top: 0; }
+      h1 { max-width: 160mm; margin-bottom: 7mm; color: var(--ink); font-size: 29pt; line-height: 1.08; letter-spacing: -.035em; }
+      h2 { margin-bottom: 3mm; color: var(--ink); font-size: 19pt; line-height: 1.15; letter-spacing: -.02em; }
+      h3 { margin-bottom: 2mm; color: var(--ink); font-size: 11pt; }
+      p { margin-bottom: 3mm; }
+      .cover { display: flex; min-height: 265mm; flex-direction: column; justify-content: space-between; }
+      .brand { display: flex; align-items: center; gap: 3mm; color: var(--ink); font-weight: 800; }
+      .brand-mark { display: grid; width: 11mm; height: 11mm; place-items: center; border-radius: 3mm; color: #fff; background: var(--green); font-size: 15pt; }
+      .cover-main { padding: 15mm 0 18mm; }
+      .cover h1 { font-size: 32pt; }
+      .subtitle { max-width: 150mm; color: var(--muted); font-size: 13pt; }
+      .problem { max-width: 158mm; margin: 12mm 0; padding: 6mm 7mm; border-left: 1.2mm solid var(--green); border-radius: 0 3mm 3mm 0; background: var(--soft); font-size: 12pt; }
+      .data-box { margin-top: 10mm; padding-top: 6mm; border-top: 1px solid var(--line); }
+      .data-box p { margin-bottom: 2mm; }
+      .cover-foot { display: flex; justify-content: space-between; gap: 8mm; padding-top: 4mm; border-top: 1px solid var(--line); color: var(--muted); font-size: 8pt; }
+      .capture-page { display: flex; min-height: 265mm; flex-direction: column; break-inside: avoid; page-break-inside: avoid; }
+      .capture-head { display: flex; align-items: baseline; gap: 3mm; margin-bottom: 4mm; }
+      .capture-number { color: var(--green); font-size: 9pt; font-weight: 800; letter-spacing: .1em; }
+      .capture-head h2 { margin: 0; font-size: 16pt; }
+      figure { margin: 0; break-inside: avoid; page-break-inside: avoid; }
+      .capture-image-wrap { display: grid; min-height: 30mm; flex: 1; place-items: center; overflow: hidden; border: 1px solid var(--line); border-radius: 2mm; background: #fafcf9; }
+      .capture-image { display: block; width: 100%; max-height: 207mm; object-fit: contain; object-position: top center; }
+      figcaption { margin-top: 4mm; padding: 3mm 4mm; border-left: .8mm solid #97b8a2; background: var(--soft); color: #50655b; font-size: 9pt; }
+      .intro { margin-bottom: 4mm; color: var(--muted); }
+      .check-card { margin: 3mm 0 4mm; padding: 4mm; border: 1px solid var(--line); border-radius: 2.5mm; break-inside: avoid; page-break-inside: avoid; }
+      .check-card h3 { display: flex; gap: 2mm; align-items: baseline; font-size: 11pt; }
+      .question { margin: 2mm 0 3mm; color: var(--ink); font-weight: 700; }
+      .answer-summary { margin-bottom: 3mm; }
+      .verdict { margin: 3mm 0; padding: 3mm 4mm; border-radius: 1.5mm; background: var(--soft); }
+      .verdict.partial { background: var(--amber-soft); color: #62471e; }
+      .source-list { margin: 2mm 0 0; padding-left: 5mm; font-size: 8.5pt; }
+      .source-list li { margin: 1.5mm 0; }
+      .small { color: var(--muted); font-size: 8.5pt; }
+      .no-consta-card { border-color: #ead6b0; background: #fffaf1; }
+      .architecture { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 6mm 0; }
+      .architecture article { padding: 5mm; border: 1px solid var(--line); border-radius: 2mm; background: #fbfdfb; }
+      .architecture article p:last-child { margin-bottom: 0; }
+      .flow { margin: 6mm 0; padding: 5mm; border: 1px solid var(--line); border-radius: 2mm; background: var(--soft); font-weight: 650; }
+      .note { padding: 4mm; border-left: 1mm solid #d5a354; background: var(--amber-soft); color: #654d29; font-size: 9pt; }
+      .page-foot { position: absolute; right: 14mm; bottom: 8mm; left: 14mm; display: flex; justify-content: space-between; padding-top: 2mm; border-top: 1px solid var(--line); color: #87978f; font-size: 7.5pt; }
+      @media screen {
+        .sheet { margin: 12mm auto; }
+      }
+      @page { size: A4 portrait; margin: 0; }
+      @media print {
+        html, body { width: 210mm; background: #fff; }
+        .sheet { width: 210mm; min-height: 297mm; margin: 0; box-shadow: none; }
+        .capture-page { min-height: 265mm; }
+        figure, .capture-page, .capture-image-wrap { break-inside: avoid !important; page-break-inside: avoid !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="sheet cover">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">⌁</span><span>BRÚJULA · PROYECTO</span></div>
+        <div class="cover-main">
+          <p class="eyebrow">Entregable · Castilla y León · 16 de octubre de 2026</p>
+          <h1>Asistente para dudas sobre campamentos juveniles</h1>
+          <p class="subtitle">Una interfaz conversacional con respuestas trazables a documentos públicos de Juventud.</p>
+          <div class="problem">
+            <strong>Problema que resuelve.</strong> Organizar un campamento juvenil exige localizar normas, guías, formularios y datos de lugares repartidos entre distintas páginas. El asistente permite consultar ese material con fragmentos de respaldo y reconoce cuándo el corpus no contiene el dato solicitado.
+          </div>
+          <div class="data-box">
+            <p class="eyebrow">Origen de los datos</p>
+            <p>Documentos PDF y guías enlazados en <a href="https://juventud.jcyl.es/web/es/actividades-tiempo-libre/organizacion-gestion-campamentos.html">Organización y gestión de campamentos · Juventud JCyL</a>, más contenido público de <a href="https://servicios.jcyl.es/wiri/?inicio=ayuda">Ayuda WIRI</a> y registros de lugares consultables en <a href="https://servicios.jcyl.es/wiri/?inicio=parajes">WIRI · Parajes</a>.</p>
+            <p class="small">El corpus usado en esta ejecución contiene 23 documentos o registros. La disponibilidad de una instalación y los requisitos concretos dependen del caso y deben confirmarse en la fuente oficial vigente.</p>
+          </div>
+        </div>
+        <div class="cover-foot"><span>Proyecto de asistente documental · Castilla y León</span><span>Capturas reales · Edge · 1366 × 900</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">01</span><h2>Consejos para organizar</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/01-consejos.png" alt="Chat con la respuesta sobre consejos de organización y cuatro fuentes citadas" /></div><figcaption>La conversación distingue la clasificación de un campamento de los trámites concretos. Muestra la guía y la Ley 11/2002 como fuentes y marca como no acreditados los detalles administrativos que no aparecen en los fragmentos recuperados.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · capturas reales de la aplicación</span><span>01 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">02</span><h2>Trámites administrativos</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/02-tramites.png" alt="Respuesta a la consulta de trámites con formulario, orden y decreto citados" /></div><figcaption>La respuesta enumera la comunicación previa y documentos que pueden corresponder según el caso. También advierte que el corpus no concreta plazo, canal ni todos los anexos; las fuentes visibles incluyen la Orden FAM/203/2016 y formularios de comunicación.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · capturas reales de la aplicación</span><span>02 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">03</span><h2>Dónde realizar la actividad</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/03-emplazamiento.png" alt="Respuesta sobre parajes, instalaciones fijas y base pública de lugares" /></div><figcaption>El asistente explica qué entiende la guía por paraje, diferencia terreno, instalación fija y espacio mixto, y remite a la consulta pública de lugares. La respuesta aclara que aparecer en el listado no confirma disponibilidad actual.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · capturas reales de la aplicación</span><span>03 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">04</span><h2>Dato estadístico no disponible</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/04-no-consta.png" alt="Pregunta por el número de evaluaciones presentadas y aviso de que no consta" /></div><figcaption>Ante la pregunta por el número de evaluaciones de riesgo presentadas el año pasado, el sistema no inventa una cifra: responde que no consta en los documentos disponibles y explica que no hay una serie estadística o registro agregado en el corpus.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · capturas reales de la aplicación</span><span>04 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">05</span><h2>Biblioteca de documentos</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/05-documentos.png" alt="Listado de documentos con filtros y 23 resultados" /></div><figcaption>La biblioteca presenta el total de 23 fuentes, buscador, filtro por tipo, fragmentos indexados y enlaces al original para que la persona organizadora contraste la información.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · capturas reales de la aplicación</span><span>05 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">06</span><h2>Plazo para comunicar la actividad</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/06-plazo.png" alt="Respuesta sobre el plazo mínimo para comunicar un campamento, con fuentes" /></div><figcaption>La respuesta cita el mínimo de siete días naturales para actividades al aire libre y aclara que se trata de una comunicación previa, no de un trámite adicional denominado «registro». El plazo procede del artículo 3 de la Orden FAM/203/2016, modificada por la Orden FAM/688/2021.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · captura real de la aplicación</span><span>06 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">07</span><h2>Previsión meteorológica no disponible</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/07-tiempo.png" alt="Aviso de que la previsión meteorológica no consta en los documentos" /></div><figcaption>La consulta pide la previsión para mañana en Valladolid. Como la aplicación solo consulta su biblioteca documental y no un servicio meteorológico, responde «No consta» en vez de fabricar un pronóstico.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · captura real de la aplicación</span><span>07 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">08</span><h2>Ratio para riesgo moderado</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/08-monitores.png" alt="Respuesta sobre la ratio de monitores para 38 participantes" /></div><figcaption>La respuesta aplica la ratio citada de un monitor de nivel por cada grupo de hasta 10 participantes: cuatro para 38. Advierte que los casos de necesidades especiales o protección pueden aplicar otra ratio y que el tipo de actividad debe confirmarse.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · captura real de la aplicación</span><span>08 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">09</span><h2>Evaluación de riesgos: límite observado</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/09-evaluacion.png" alt="La aplicación responde que no consta si la evaluación de riesgos es obligatoria" /></div><figcaption>La aplicación responde «No consta» a la pregunta sobre la obligatoriedad. La revisión del corpus, sin embargo, localiza el artículo 37.3 de la Ley 11/2002, que exige evaluación específica para las actividades juveniles de tiempo libre sujetas a esa ley. Se registra como una limitación de recuperación, no como una conclusión legal.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · captura real de la aplicación</span><span>09 / 10</span></div>
+      </section>
+
+      <section class="sheet capture-page">
+        <div class="capture-head"><span class="capture-number">10</span><h2>Recuento anual no disponible</h2></div>
+        <figure><div class="capture-image-wrap"><img class="capture-image" src="capturas/10-recuento.png" alt="Aviso de que no consta cuántos campamentos se han realizado en el año actual" /></div><figcaption>La consulta pide el número de campamentos realizados en el año actual. El corpus no incluye una estadística agregada por año y el asistente no inventa un total.</figcaption></figure>
+        <div class="page-foot"><span>Brújula · captura real de la aplicación</span><span>10 / 10</span></div>
+      </section>
+
+      <section class="sheet check-page">
+        <p class="eyebrow">Comprobación · preguntas 1 y 2</p>
+        <h2>Cómo lo comprobé</h2>
+        <p class="intro">El 16 de octubre de 2026 envié las preguntas al servidor en ejecución, esperé las respuestas y sus referencias visibles, y comparé las afirmaciones principales con el fragmento mostrado y los textos oficiales enlazados. La respuesta del modelo se resume aquí; no se presenta como dictamen jurídico.</p>
+
+        <article class="check-card">
+          <h3><span>01</span> Consejos para montar un campamento</h3>
+          <p class="question">Pregunta: «¿Qué consejos debo conocer para montar una actividad de tiempo libre, en concreto un campamento juvenil?»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> la guía clasifica el campamento al aire libre con más de cuatro pernoctaciones y más de nueve jóvenes; la Ley 11/2002 define la instalación juvenil; los fragmentos no bastan para detallar permisos, plazos, personal y requisitos concretos. También advierte que la instrucción sobre fechas está incompleta.</p>
+          <p class="verdict partial"><strong>Resultado: coincidencia parcial.</strong> El umbral y la definición aparecen en las fuentes citadas. La frase sobre no incluir fechas previas al montaje no queda demostrada por el fragmento visible en la captura; el propio asistente advierte que el fragmento está incompleto. No uses la respuesta como lista completa de requisitos.</p>
+          <p class="small"><strong>Abre para confirmarlo:</strong></p>
+          <ul class="source-list">
+            <li><a href="https://juventud.jcyl.es/web/jcyl/binarios/461/486/instrucciones_eval_organizadores_metadata.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&amp;blobnocache=true">Guía de uso para organizadores (DOC-007)</a>: apartado de categorías de actividades y definición de «paraje».</li>
+            <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-15544&amp;p=20210929&amp;tn=1">Ley 11/2002, texto consolidado en BOE</a>: artículos 35, 37 y 41 (actividad al aire libre, comunicación y evaluación de riesgos, definición de campamento juvenil).</li>
+            <li><a href="https://juventud.jcyl.es/web/jcyl/binarios/622/671/Ley_11_2002_Juventud%20CyL_metadata.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&amp;blobnocache=true">Ley 11/2002 en el corpus (DOC-001)</a> y <a href="https://juventud.jcyl.es/web/jcyl/Juventud/es/Plantilla100Detalle/1284710993928/_/1284167019168/Albergue">ficha del directorio (DIR-001)</a>. La ficha no prueba disponibilidad.</li>
+          </ul>
+        </article>
+
+        <article class="check-card">
+          <h3><span>02</span> Trámites administrativos</h3>
+          <p class="question">Pregunta: «¿Qué trámites administrativos debo hacer para la actividad de tiempo libre?»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> comunicación previa de inicio; autorización familiar para menores no acompañados; y, cuando procedan, permisos del titular, documentación alimentaria, comunicación a la Confederación Hidrográfica o autorizaciones por espacios protegidos. Mencionó además el formulario de modificación de una actividad comunicada.</p>
+          <p class="verdict partial"><strong>Resultado: coincide en lo esencial, con condiciones.</strong> La Ley vigente recoge comunicación previa, autorización familiar y evaluación de riesgos específica. La Orden y los formularios citados desarrollan datos y documentación; varios permisos dependen del lugar y de la actividad. La respuesta reconoce que no fija el plazo, el canal ni cada anexo. No es una lista universal ni sustituye revisar la norma consolidada.</p>
+          <p class="small"><strong>Abre para confirmarlo:</strong></p>
+          <ul class="source-list">
+            <li><a href="https://bocyl.jcyl.es/boletin.do?fechaBoletin=28%2F03%2F2016">Orden FAM/203/2016 · BOCYL, 28/03/2016</a> y <a href="https://bocyl.jcyl.es/eli/es-cl/o/2021/05/21/fam688/">Orden FAM/688/2021 · modificación</a>.</li>
+            <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-15544&amp;p=20210929&amp;tn=1">Ley 11/2002, art. 37</a> y <a href="https://juventud.jcyl.es/web/jcyl/binarios/134/1009/Decreto_117_2003%20(Texto%20consolidado)%20Act%202026_metadata.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&amp;blobnocache=true">Decreto 117/2003 consolidado (DOC-005)</a>.</li>
+            <li><a href="https://juventud.jcyl.es/web/jcyl/binarios/478/492/Comuniaci%C3%B3n%20previa%20en%20papel%20(4)_metadata.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&amp;blobnocache=true">Comunicación previa en papel (DOC-017)</a> y <a href="https://juventud.jcyl.es/web/jcyl/binarios/9/956/Modificaci%C3%B3n%20Comunicaci%C3%B3n%20en%20papel%20(2)_metadata.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&amp;blobnocache=true">formulario de modificación (DOC-018)</a>.</li>
+          </ul>
+        </article>
+        <div class="page-foot"><span>Fuentes oficiales enlazadas para revisión personal</span><span>Comprobación · 1 / 2</span></div>
+      </section>
+
+      <section class="sheet check-page">
+        <p class="eyebrow">Comprobación · preguntas 3 y 4</p>
+        <h2>Cómo lo comprobé</h2>
+        <p class="intro">La comparación se limita a lo que está publicado y recuperado en el corpus; una ficha de lugar o una respuesta generada no acredita por sí sola vigencia, disponibilidad ni permisos sectoriales.</p>
+
+        <article class="check-card">
+          <h3><span>03</span> Emplazamiento de la actividad</h3>
+          <p class="question">Pregunta: «¿Dónde puedo montar mi actividad de tiempo libre?»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> en un paraje que puede ser un terreno sin infraestructura, una instalación fija o un espacio mixto; remitió a la base pública de lugares y avisó que el registro no confirma disponibilidad actual.</p>
+          <p class="verdict"><strong>Resultado: coincide con las guías visibles.</strong> La Guía de organizadores define «paraje» como el lugar donde se celebra la actividad o donde tiene su base, e incluye las tres posibilidades. La Guía para usuarios describe los datos del lugar seleccionable. La cautela sobre disponibilidad es adecuada: el listado no equivale a una reserva.</p>
+          <p class="small"><strong>Abre para confirmarlo:</strong></p>
+          <ul class="source-list">
+            <li><a href="https://juventud.jcyl.es/web/jcyl/binarios/461/486/instrucciones_eval_organizadores_metadata.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&amp;blobnocache=true">Guía de uso para organizadores (DOC-007)</a>, definición de «paraje».</li>
+            <li><a href="https://juventud.jcyl.es/web/jcyl/binarios/672/971/instrucciones_comunicaciones_metadata.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&amp;blobnocache=true">Guía para usuarios (DOC-016)</a>, apartado «Datos de localización».</li>
+            <li><a href="https://servicios.jcyl.es/wiri/?inicio=parajes">WIRI · Parajes</a>: consulta el registro y confirma con la entidad titular la disponibilidad y condiciones actuales.</li>
+          </ul>
+        </article>
+
+        <article class="check-card no-consta-card">
+          <h3><span>04</span> Número anual de evaluaciones de riesgo</h3>
+          <p class="question">Pregunta: «¿Cuántas evaluaciones de riesgo se presentaron el año pasado?»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> «No consta en los documentos disponibles». No adjuntó fuentes ni inventó una cifra.</p>
+          <p class="verdict"><strong>Resultado: correcto respecto del corpus consultado.</strong> Los 23 documentos y registros indexados describen normas, metodología, guías, formularios e instalaciones; no aportan una serie anual agregada de evaluaciones presentadas. Esto no demuestra que la Administración no conserve esa estadística: para saberlo habría que consultarla por un canal oficial.</p>
+          <p class="small"><strong>Qué abrir:</strong> la <a href="https://bocyl.jcyl.es/eli/es-cl/o/2016/06/21/fam614/">Orden FAM/614/2016</a> explica la metodología de evaluación, pero no contiene el recuento anual. Para confirmar si existe el dato fuera del corpus, consulta a la Dirección General competente en Juventud; no hay una fuente estadística citada en esta respuesta.</p>
+        </article>
+
+        <aside class="note"><strong>Límite de la revisión.</strong> Se comprobó la coherencia entre respuestas, fragmentos recuperados y normas oficiales enlazadas; no se certifica el cumplimiento de un caso concreto. Antes de presentar una comunicación, abre la versión oficial vigente y verifica sus requisitos aplicables.</aside>
+        <div class="page-foot"><span>Fuentes oficiales enlazadas para revisión personal</span><span>Comprobación · 2 / 2</span></div>
+      </section>
+
+      <section class="sheet check-page">
+        <p class="eyebrow">Comprobación · preguntas añadidas</p>
+        <h2>Cómo lo comprobé</h2>
+        <p class="intro">Contrasté las respuestas y las referencias que aparecieron realmente en el chat. Cuando la aplicación no recuperó una fuente que sí está en el corpus, lo indico como incidencia y enlazo el texto oficial que conviene abrir.</p>
+
+        <article class="check-card">
+          <h3><span>05</span> Plazo para registrar / comunicar</h3>
+          <p class="question">Pregunta: «¿Cuánto tiempo tengo para registrar la actividad de tiempo libre en JCYL, porque mi campamento comienza dentro de 2 semanas?»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> comunicación previa al inicio y al menos 7 días naturales de antelación para actividades al aire libre; con dos semanas, habría margen si al presentar quedan siete días o más. Aclara que la norma habla de comunicación, no de un trámite distinto de registro.</p>
+          <p class="verdict"><strong>Resultado: coincide con la norma citada.</strong> El artículo 3.2 de la Orden FAM/203/2016 establece siete días para actividades al aire libre y cuatro días para otras actividades de tiempo libre con riesgo moderado o importante. La Orden FAM/688/2021 modificó el texto. La respuesta no sustituye comprobar la categoría y el cómputo exacto de fechas.</p>
+          <p class="small"><strong>Abre para confirmarlo:</strong> <a href="https://bocyl.jcyl.es/eli/es-cl/o/2021/05/21/fam688/">Orden FAM/688/2021 · BOCYL</a>, artículo único que da nueva redacción al artículo 3; y <a href="https://bocyl.jcyl.es/boletin.do?fechaBoletin=28%2F03%2F2016">Orden FAM/203/2016 · BOCYL</a>, texto original con la modificación. En el corpus: DOC-002 y DOC-004.</p>
+        </article>
+
+        <article class="check-card no-consta-card">
+          <h3><span>06</span> Previsión del tiempo</h3>
+          <p class="question">Pregunta: «Dime la previsión del tiempo para mañana en Valladolid»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> «No consta en los documentos disponibles», sin fuente meteorológica ni pronóstico.</p>
+          <p class="verdict"><strong>Resultado: comportamiento correcto para esta biblioteca.</strong> El proyecto no consulta un servicio de predicción meteorológica. Para el pronóstico real, debe consultarse una fuente meteorológica actualizada; no se ha incluido una predicción en este informe.</p>
+        </article>
+
+        <div class="page-foot"><span>Fuentes oficiales y registros citados en la respuesta</span><span>Comprobación · añadidas 1 / 3</span></div>
+      </section>
+
+      <section class="sheet check-page">
+        <p class="eyebrow">Comprobación · preguntas añadidas</p>
+        <h2>Personal y obligación de evaluar</h2>
+
+        <article class="check-card">
+          <h3><span>07</span> Monitores para 38 participantes</h3>
+          <p class="question">Pregunta: «¿Cuántos monitores necesito para un campamento evaluado con riesgo moderado, donde participan 38 niños?»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> cuatro monitores de nivel, calculando uno por cada grupo de hasta 10; añade condiciones para participantes con necesidades especiales o expediente de protección.</p>
+          <p class="verdict partial"><strong>Resultado: cálculo coherente con el registro citado, sujeto a confirmar aplicabilidad.</strong> El documento de ratios del corpus indica un monitor por cada grupo de hasta 10 participantes para actividades de riesgo moderado o importante y un coordinador por actividad de más de 50. La respuesta no determina si hay particularidades de edad, titulación o actividad que cambien el personal exigible.</p>
+          <p class="small"><strong>Abre para confirmarlo:</strong> <a href="https://juventud.jcyl.es/web/jcyl/binarios/709/358/Ratio%20de%20Responsables%20en%20Actividades%20Juveniles%20TL%20(act%2009-01-2024)_metadata.pdf?blobheader=application%2Fpdf%3Bcharset%3DUTF-8&amp;blobnocache=true">Ratio de Responsables en Actividades Juveniles de Tiempo Libre (DOC-021)</a> y la <a href="https://bocyl.jcyl.es/eli/es-cl/o/2016/06/21/fam614/">Orden FAM/614/2016</a> sobre metodología de evaluación de riesgos.</p>
+        </article>
+
+        <article class="check-card no-consta-card">
+          <h3><span>08</span> Obligación de evaluar riesgos</h3>
+          <p class="question">Pregunta: «¿Es obligatoria siempre hacer la evaluación de riesgos?»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> «No consta en los documentos disponibles», sin fuentes.</p>
+          <p class="verdict partial"><strong>Resultado: respuesta incompleta; incidencia de recuperación.</strong> El corpus incluye la Ley 11/2002. Su artículo 37.3 establece que las actividades juveniles de tiempo libre sujetas a esa ley contarán con una evaluación específica. La respuesta «No consta» no refleja esa fuente. La palabra «siempre» requiere matizar el ámbito de aplicación; no significa que toda actividad recreativa, cualquiera que sea su naturaleza, quede automáticamente dentro de la ley.</p>
+          <p class="small"><strong>Abre para confirmarlo:</strong> <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-15544&amp;p=20210929&amp;tn=1">Ley 11/2002, texto consolidado en BOE, artículo 37.3</a>; también la <a href="https://bocyl.jcyl.es/eli/es-cl/o/2016/06/21/fam614/">Orden FAM/614/2016</a> sobre la metodología. En el corpus: DOC-001 y DOC-003. Es la fuente que la aplicación debió recuperar para dar una respuesta matizada.</p>
+        </article>
+
+        <div class="page-foot"><span>Fuentes oficiales enlazadas para revisión personal</span><span>Comprobación · añadidas 2 / 3</span></div>
+      </section>
+
+      <section class="sheet check-page">
+        <p class="eyebrow">Comprobación · preguntas añadidas</p>
+        <h2>Recuento anual no disponible</h2>
+        <article class="check-card no-consta-card">
+          <h3><span>09</span> Total de campamentos del año actual</h3>
+          <p class="question">Pregunta: «Dime cuántos campamentos llevamos en el año actual»</p>
+          <p class="answer-summary"><strong>Respondió:</strong> «No consta en los documentos disponibles», sin inventar una cifra.</p>
+          <p class="verdict"><strong>Resultado: correcto respecto del corpus.</strong> El listado consultado reúne 23 documentos y registros, pero no presenta un recuento acumulado de campamentos por año. Esto no demuestra que la Administración no disponga de ese dato fuera de la biblioteca indexada.</p>
+          <p class="small"><strong>Qué abrir:</strong> no hay una fuente estadística citada por la aplicación. Para una cifra oficial, habría que consultar al órgano competente de Juventud.</p>
+        </article>
+
+        <aside class="note"><strong>Límite de la revisión.</strong> Las capturas documentan el comportamiento real de la aplicación. La incidencia de la pregunta 08 muestra que el sistema puede ser demasiado conservador aunque exista una fuente pertinente; por eso siempre conviene abrir la norma oficial.</aside>
+        <div class="page-foot"><span>Fuentes oficiales enlazadas para revisión personal</span><span>Comprobación · añadidas 3 / 3</span></div>
+      </section>
+
+      <section class="sheet check-page">
+        <p class="eyebrow">Implementación</p>
+        <h2>Cómo está hecho</h2>
+        <p class="intro">Una aplicación web de consulta documental con recuperación de fragmentos y respuestas generadas a partir de esos fragmentos.</p>
+        <div class="architecture">
+          <article>
+            <h3>Servidor · Python</h3>
+            <p><strong>FastAPI</strong> expone <code>/api/preguntar</code> y <code>/api/documentos</code>. El servidor carga el corpus local y un índice de embeddings persistido en disco; recupera los pasajes más próximos a la pregunta y los usa como contexto del modelo.</p>
+            <p>Si la recuperación no encuentra respaldo suficiente o la consulta exige una estadística agregada inexistente, responde «No consta» sin pedir al modelo que complete el dato.</p>
+          </article>
+          <article>
+            <h3>Interfaz · Svelte y TypeScript</h3>
+            <p><strong>Vite</strong> sirve el chat y la biblioteca de documentos. El navegador solo llama a las rutas relativas de la API y muestra las fuentes y fragmentos devueltos por el servidor.</p>
+            <p>La clave de OpenAI se lee en el backend desde <code>.env</code>; no se incluye en las peticiones ni en el código del navegador.</p>
+          </article>
+          <article>
+            <h3>Embeddings · recuperación</h3>
+            <p><code>text-embedding-3-small</code> convierte las preguntas y los fragmentos en vectores para buscar los pasajes relevantes. El índice se guarda en <code>data/indice_embeddings.npz</code> para evitar recalcularlo en cada arranque.</p>
+          </article>
+          <article>
+            <h3>Modelo de respuesta</h3>
+            <p><code>gpt-6-luna</code> redacta una contestación usando el contexto recuperado. Las fuentes que aparecen en el chat son los registros y fragmentos seleccionados por el servidor.</p>
+          </article>
+        </div>
+        <div class="flow">Fuentes oficiales → corpus local → índice de embeddings → recuperación RAG → respuesta con referencias o aviso de «No consta»</div>
+        <p><strong>Capturas y ejecución.</strong> Las diez imágenes de chat y biblioteca de este informe se tomaron con Microsoft Edge, controlado mediante <code>playwright-core</code>, en una ventana de 1366 × 900 mientras el frontend y el servidor local estaban activos. Las respuestas visibles proceden de llamadas reales al endpoint del proyecto.</p>
+        <p class="small">El material es una ayuda de consulta y trazabilidad. La persona organizadora debe confirmar en las normas y registros oficiales los requisitos y la disponibilidad aplicables a su caso.</p>
+        <div class="page-foot"><span>Brújula · Asistente documental para campamentos juveniles</span><span>Implementación</span></div>
+      </section>
+    </main>
+  </body>
+</html>
