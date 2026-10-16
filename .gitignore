@@ -17,3 +17,7 @@ node_modules/
 *.db
 *.sqlite
 *.sqlite3
+
+# Índice vectorial local regenerable desde data/corpus.json
+data/indice_embeddings.npz
+data/indice_embeddings.npz.tmp
